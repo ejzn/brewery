@@ -1,0 +1,6 @@
+<templates>
+ <div t-name="account_itc" t-attf-class="base #{cls}" class="oe_web_account_itc">
+    <button name="account_itc" states="confirmed" type="object" id="fileButton">File</button>
+ </div>
+</templates>
+
