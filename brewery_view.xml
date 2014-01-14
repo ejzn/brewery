@@ -1,87 +1,256 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="utf-8"?>
 <openerp>
-  <data>
+    <data>
 
-    <record model="ir.actions.client" id="action_itc_file">
-        <field name="name">File CRA Return</field>
-        <field name="tag">account_itc_file.action</field>
+
+    <record id="brewery_ingredient_tree" model="ir.ui.view">
+        <field name="name">brewery.ingredient.tree</field>
+        <field name="model">brewery.ingredient</field>
+        <field name="arch" type="xml">
+            <tree string="Brewery Tanks">
+                <field name="name" />
+                <field name="product_id" />
+                <field name="quantity" />
+            </tree>
+        </field>
     </record>
 
-    <record model="ir.ui.view" id="view_itc_return_form">
-      <field name="name">account.itc.return.form</field>
-      <field name="model">account.itc.return</field>
-      <field name="arch" type="xml">
-        <form string="ITC Return" version="7.0">
-            <header>
-                <button name="action_calculate_period" states="draft" string="Calculate ITC's" type="object"/>
-                <button name="action_confirm" states="draft" string="Confirm Return" type="object"/>
-                <button name="action_ammend" states="filed" string="Ammend Return" type="object" />
-                <button name="action_file" states="confirmed" string="File Return" type="object" />
-                <!--<field name="id"  widget="account_itc"/>-->
-                <field name="state" widget="statusbar" statusbar_visible="draft,confirmed,filed" statusbar_colors='{"draft":"red","confirmed":"yellow", "filed":"blue"}' readonly="1"/>
-            </header>
-             <sheet>
-                <h1><label for="x_name" class="oe_inline" string="Return # "/><field class="oe_inline" name="id"/></h1>
-                <group>
-                    <field name="reporting_period_start"/>
-                    <field name="reporting_period_end"/>
-                    <field name="date_filed"/>
-                </group>
-                <group>
-                    <field name="line_101"/>
-                    <field name="line_105"/>
-                    <field name="line_108"/>
-                    <field name="line_109"/>
-                    <field name="line_110"/>
-                    <field name="line_111"/>
-                    <field name="line_205"/>
-                    <field name="line_405"/>
-                    <field name="line_114"/>
-                    <field name="line_115"/>
-                    <field name="line_135"/>
-                    <field name="line_136"/>
-                </group>
-            </sheet>
-        </form>
-      </field>
-
+    <record id="brewery_ingredient_form" model="ir.ui.view">
+        <field name="name">brewery.ingredient.form</field>
+        <field name="model">brewery.ingredient</field>
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+                <field name="name" />
+                <field name="quantity" />
+                <field name="ingredient_id" />
+        </field>
     </record>
 
-    <record model="ir.ui.view" id="view_itc_return_tree">
-      <field name="name">account.itc.return.tree</field>
-      <field name="model">account.itc.return</field>
+    <record id="brewery_tanks_form" model="ir.ui.view">
+        <field name="name">brewery.tank.form</field>
+        <field name="model">brewery.tank</field>
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+            <form string="Brewery Tanks" version="7.0">
+                <group>
+                    <field name="id" string="Tank #" />
+                    <field name="name" string="Name" />
+                    <field name="current_batch" string="Current Batch" />
+                </group>
+                <group>
+                    <field name="capacity" string="Capacity"/>
+                    <field name="current_volume" string="Current Volume"/>
+                </group>
+            </form>
+        </field>
+    </record>
+
+
+    <record model="ir.ui.view" id="view_brewery_tank_tree">
+      <field name="name">brewery.tank.tree</field>
+      <field name="model">brewery.tank</field>
       <field name="arch" type="xml">
-      <tree string="ITC Return">
-        <field name="id"/>
-        <field name="state"/>
-        <field name="reporting_period_start"/>
-        <field name="reporting_period_end"/>
-        <field name="line_101"/>
-        <field name="line_105"/>
-        <field name="line_108"/>
-        <field name="line_109"/>
-        <field name="line_114"/>
-        <field name="line_115"/>
+      <tree string="Brewery Tanks">
+        <field name="id" string="Tank #"/>
+        <field name="name"/>
+        <field name="capacity"/>
+        <field name="current_volume" string="Current Volume"/>
+        <field name="current_batch" string="Current Batch" />
       </tree>
       </field>
     </record>
 
-    <record id="action_account_itc_return_form" model="ir.actions.act_window">
-        <field name="name">ITC Returns</field>
+    <record id="action_brewery_tanks" model="ir.actions.act_window">
+        <field name="name">Brewery Tanks</field>
         <field name="type">ir.actions.act_window</field>
-        <field name="res_model">account.itc.return</field>
+        <field name="res_model">brewery.tank</field>
         <field name="view_type">form</field>
         <field name="view_mode">tree,form</field>
         <field name="help" type="html">
           <p class="oe_view_nocontent_create">
-            Click to create a new ITC Return
-            </p><p>
-                An ITC return allows you to automate submissions to the CRA.
+                Click to create a new Tank
             </p>
         </field>
     </record>
 
-    <menuitem name="ITC Returns" action="action_account_itc_return_form" id="menu_account_itc_return" parent="account.menu_finance_periodical_processing" sequence="3"/>
+    <menuitem name="Tanks" action="action_brewery_tanks" id="menu_brewery_tanks" parent="brewery.menu_brewery_batches" sequence="5"/>
 
-  </data>
+
+    <record model="ir.ui.view" id="view_brewery_batch_form">
+      <field name="name">brewery.batch.form</field>
+      <field name="model">brewery.batch</field>
+      <field name="arch" type="xml">
+        <form string="Brewery Batch" version="7.0">
+            <header>
+                <button name="action_activate" states="prepping" string="Activate" type="object" />
+                <button name="action_finish" states="active" string="Finish" type="object" />
+                <field name="state" widget="statusbar" statusbar_visible="prepping,active,finished" statusbar_colors='{"prepping":"red","active":"yellow", "finished":"blue"}' readonly="1"/>
+            </header>
+             <sheet>
+                <h1><label for="batch_id" class="oe_inline" string="Batch # "/><field class="oe_inline" name="id"/></h1>
+              <group>
+                <field name="id" string="QC #"/>
+                <field name="name"/>
+                <field name="brew_date"/>
+                <field name="state" string="Brewing State"/>
+              </group>
+              <group>
+                <field name="tank_volume" string="Current Volume"/>
+                <field name="packaged_volume" string="Packaged Volume"/>
+                <field name="waste" string="Waste Volume"/>
+                <field name="tank_id" string="Tank"/>
+                <field name="recipe_id" string="Recipe"/>
+              </group>
+            </sheet>
+        </form>
+      </field>
+    </record>
+
+    <record model="ir.ui.view" id="view_brewery_batch_tree">
+      <field name="name">brewery.batch.tree</field>
+      <field name="model">brewery.batch</field>
+      <field name="arch" type="xml">
+      <tree string="Brewery Batch">
+        <field name="id" string="QC #"/>
+        <field name="name"/>
+        <field name="brew_date"/>
+        <field name="state" string="State"/>
+        <field name="tank_volume" string="Current Volume"/>
+        <field name="packaged_volume"/>
+        <field name="waste"/>
+        <field name="tank_id"/>
+        <field name="recipe_id"/>
+      </tree>
+      </field>
+    </record>
+
+
+    <record id="action_brewery_batch" model="ir.actions.act_window">
+        <field name="name">Brewery Batches</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">brewery.batch</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+          <p class="oe_view_nocontent_create">
+                Click to create a new Brewery Batch
+            </p>
+        </field>
+    </record>
+
+    <menuitem name="Brewery" action="action_brewery_batch" id="menu_brewery" sequence="4"/>
+    <menuitem name="Brewery" action="action_brewery_batch" id="menu_brewery_batches" parent="brewery.menu_brewery" sequence="1"/>
+    <menuitem name="Batches" action="action_brewery_batch" id="menu_brewery_batches_child" parent="brewery.menu_brewery_batches" sequence="5"/>
+
+
+    <record model="ir.ui.view" id="view_brewery_recipe_tree">
+      <field name="name">brewery.recipe.tree</field>
+      <field name="model">brewery.recipe</field>
+      <field name="arch" type="xml">
+      <tree string="Brewery Recipes">
+        <field name="name"/>
+        <field name="yield"/>
+        <field name="ingredients" />
+      </tree>
+      </field>
+    </record>
+
+    <record model="ir.ui.view" id="view_brewery_recipe_form">
+      <field name="name">brewery.recipe.form</field>
+      <field name="model">brewery.recipe</field>
+      <field name="type">form</field>
+      <field name="arch" type="xml">
+        <form string="Recipes" version="7.0">
+            <group>
+                <field class="oe_inline" name="name"/>
+                <field name="yield"/>
+            </group>
+            <field name="ingredients" context="{'ingredient_id' : active_id}" />
+        </form>
+      </field>
+    </record>
+
+
+    <record id="action_brewery_recipe" model="ir.actions.act_window">
+        <field name="name">Recipes</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">brewery.recipe</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+          <p class="oe_view_nocontent_create">
+            Click to create a new recipe
+            </p>
+        </field>
+    </record>
+
+    <menuitem name="Recipes" action="action_brewery_recipe" id="menu_brewery_recipe" parent="brewery.menu_brewery" sequence="3"/>
+    <menuitem name="Recipes" action="action_brewery_recipe" id="menu_brewery_recipes" parent="brewery.menu_brewery_recipe" sequence="3"/>
+
+  <record model="ir.ui.view" id="view_brewery_bottling_form">
+      <field name="name">brewery.bottling.form</field>
+      <field name="model">brewery.bottling.run</field>
+      <field name="arch" type="xml">
+        <form string="Bottling Run" version="7.0">
+            <header>
+                <button name="action_confirm" states="draft" string="Confirm Run" type="object" />
+                <button name="action_bottle" states="confirmed" string="Bottle" type="object" />
+                <field name="state" widget="statusbar" statusbar_visible="draft,confirmed,bottled" statusbar_colors='{"draft":"red","confirmed":"yellow", "bottled":"blue"}' readonly="1"/>
+            </header>
+             <sheet>
+                <h1><label for="bottling_id" class="oe_inline" string="Bottling # "/><field class="oe_inline" name="id"/></h1>
+                <group>
+                    <field name="batch_id" />
+                    <field name="date" />
+                    <field name="product_id" />
+                    <field name="state" invisible="True"/>
+                </group>
+                <group>
+                    <field name="unit_size" string="Unit Size"/>
+                    <field name="volume_available" string="Volume Available" />
+                    <field name="units" />
+                    <field name="labels" />
+                    <field name="caps" />
+                </group>
+            </sheet>
+        </form>
+      </field>
+    </record>
+
+  <record model="ir.ui.view" id="view_brewery_bottling_tree">
+      <field name="name">brewery.bottling.tree</field>
+      <field name="model">brewery.bottling.run</field>
+      <field name="arch" type="xml">
+      <tree string="Batch Bottling">
+        <field name="id" string="Run #"/>
+        <field name="batch_id"/>
+        <field name="date"/>
+        <field name="product_id"/>
+        <field name="units"/>
+        <field name="volume_available" string="Volume Available"/>
+        <field name="state" />
+      </tree>
+      </field>
+    </record>
+
+    <record id="action_brewery_bottling" model="ir.actions.act_window">
+        <field name="name">Bottling</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">brewery.bottling.run</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+          <p class="oe_view_nocontent_create">
+            Click to create a new Bottling run
+            </p>
+        </field>
+    </record>
+
+    <menuitem name="Bottling" action="action_brewery_bottling" id="menu_brewery_bottling" parent="brewery.menu_brewery_batches" sequence="3"/>
+
+<menuitem name="Inventory" id="menu_brewery_inventory" parent="menu_brewery" sequence="3"/>
+<menuitem name="Stockable" action="product.product_normal_action_sell" id="brewery.products" parent="brewery.menu_brewery_inventory" sequence="1"/>
+<menuitem name="Materials" id="menu_brewery_products" action="product.product_normal_action_puchased" parent="brewery.menu_brewery_inventory"/>
+
+    </data>
 </openerp>

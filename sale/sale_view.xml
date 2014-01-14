@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+    <record model="ir.ui.view" id="view_sale_added_fields">
+      <field name="name">sale.order.purchase_id</field>
+      <field name="model">sale.order</field>
+      <field name="type">form</field>
+      <field name="inherit_id" ref="sale.view_order_form"/>
+      <field name="arch" type="xml">
+           <field name="date_order" position="before">
+                    <field name="purchase_order" />
+           </field>
+    </field>
+    </record>
+
+
+    <record model="ir.ui.view" id="view_sale_container_deposits">
+      <field name="name">sale.container.deposits</field>
+      <field name="model">sale.container.deposit</field>
+      <field name="arch" type="xml">
+      <tree string="Deposists">
+        <field name="container_size"/>
+        <field name="deposit_rate"/>
+      </tree>
+      </field>
+    </record>
+
+    <record id="action_sales_container_deposits_form" model="ir.actions.act_window">
+        <field name="name">Deposits</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">sale.container.deposit</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+          <p class="oe_view_nocontent_create">
+                Click to create a new Deposit
+            </p>
+        </field>
+    </record>
+
+    <menuitem name="Configuration" action="action_sales_container_deposits_form" id="menu_brewery_config" parent="menu_brewery" sequence="8"/>
+    <menuitem name="Deposits" action="action_sales_container_deposits_form" id="menu_sales_container_deposists" parent="menu_brewery_config" sequence="5"/>
+
+    <record model="ir.ui.view" id="view_sale_distributor_type">
+      <field name="name">sale.distributor.type</field>
+      <field name="model">sale.distributor.type</field>
+      <field name="arch" type="xml">
+      <tree string="Distributor Types">
+        <field name="name"/>
+        <field name="tax_included"/>
+        <field name="deposit_included"/>
+        <field name="discount_rate"/>
+      </tree>
+      </field>
+    </record>
+
+    <record id="action_sales_distributor_type_form" model="ir.actions.act_window">
+        <field name="name">Distributor Types</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">sale.distributor.type</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+          <p class="oe_view_nocontent_create">
+                Click to create a new Distributor Type
+            </p>
+        </field>
+    </record>
+
+    <menuitem name="Distributor Types" action="action_sales_distributor_type_form" id="sales_distributor_type" parent="menu_brewery_config" sequence="5"/>
+
+
+
+    </data>
+</openerp>

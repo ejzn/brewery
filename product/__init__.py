@@ -1,8 +1,7 @@
 # -*- coding: utf-8 -*-
 ##############################################################################
 #
-#	ENAPPS Canada
-#    Copyright (C) 2013 http://enapps.ca
+#    ENAPPS Canada Ltd
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU Affero General Public License as
@@ -18,32 +17,6 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ##############################################################################
-
-
-{
-    'name': 'Brewery Management',
-    'version': '0.1',
-    'category': 'Stock',
-    'description': """
- Manage your Brewery Batches, Recipes and Stock
-========================================================
-
-By adding Batches, recipes, some special fields and the Doc 60 license requirements
-this module allows Breweries to easily manage their operations.
-
-""",
-    'author': 'ENAPPS Canada',
-    'website': 'http://www.enapps.ca',
-    'images': ['images/something.jpeg'],
-    'depends': ['web','sale','product', 'l10n_ca_moon'],
-    'data': [
-        'sale/sale_view.xml',
-        'partner/partner_view.xml',
-        'brewery_view.xml',
-        'brewery_dashboard.xml',
-    ],
-    'css': ['static/src/css/style.css'],
-    'installable': True,
-    'auto_install': False,
-}
+import product
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
+

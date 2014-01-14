@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 ##############################################################################
 #
-#	ENAPPS Canada
-#    Copyright (C) 2013 http://enapps.ca
+#    OpenERP, Open Source Management Solution
+#    Copyright (C) 2004-2010 Tiny SPRL (<http://tiny.be>).
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU Affero General Public License as
@@ -19,31 +19,19 @@
 #
 ##############################################################################
 
+import time
+from openerp.osv import fields, osv
+from openerp.tools.translate import _
 
-{
-    'name': 'Brewery Management',
-    'version': '0.1',
-    'category': 'Stock',
-    'description': """
- Manage your Brewery Batches, Recipes and Stock
-========================================================
+class res_partner(osv.osv):
+    _inherit = 'res.partner'
 
-By adding Batches, recipes, some special fields and the Doc 60 license requirements
-this module allows Breweries to easily manage their operations.
+    _columns = {
+           'nickname':fields.char('Nickname',size=64),
+           'licensee_number':fields.integer('Licensee Number'),
+           'distributor_type':fields.many2one('sale.distributor.type', 'Distributor Type', help="The Liquor store category of the customer"),
+    }
 
-""",
-    'author': 'ENAPPS Canada',
-    'website': 'http://www.enapps.ca',
-    'images': ['images/something.jpeg'],
-    'depends': ['web','sale','product', 'l10n_ca_moon'],
-    'data': [
-        'sale/sale_view.xml',
-        'partner/partner_view.xml',
-        'brewery_view.xml',
-        'brewery_dashboard.xml',
-    ],
-    'css': ['static/src/css/style.css'],
-    'installable': True,
-    'auto_install': False,
-}
+res_partner()
+
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

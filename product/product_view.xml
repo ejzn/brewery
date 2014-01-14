@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <record id="brewery_product_addon" model="ir.ui.view">
+            <field name="name">brewery.product.type</field>
+            <field name="model">product.product</field>
+            <field name="type">form</field>
+            <field name="inherit_id" ref="product.product_normal_form_view"/>
+            <field name="arch" type="xml">
+                <field name="categ_id" position="after">
+                    <field name="product_type" string="Type"/>
+               </field>
+            </field>
+        </record>
+    </data>
+</openerp>

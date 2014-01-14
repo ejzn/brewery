@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 ##############################################################################
 #
-#	ENAPPS Canada
-#    Copyright (C) 2013 http://enapps.ca
+#    http://erikjohnson.ca ENAPPS Erik Johnson @erikjohnzon
+#    Copyright (C) 2004-2010 Tiny SPRL (<http://tiny.be>).
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU Affero General Public License as
@@ -19,31 +19,26 @@
 #
 ##############################################################################
 
+import time
+from openerp.osv import fields, osv
+from openerp.tools.translate import _
 
-{
-    'name': 'Brewery Management',
-    'version': '0.1',
-    'category': 'Stock',
-    'description': """
- Manage your Brewery Batches, Recipes and Stock
-========================================================
 
-By adding Batches, recipes, some special fields and the Doc 60 license requirements
-this module allows Breweries to easily manage their operations.
+class product_type(osv.osv):
+    _name = "product.type"
+    _columns = {
+        'name' : fields.char('Name', size=64),
+    }
 
-""",
-    'author': 'ENAPPS Canada',
-    'website': 'http://www.enapps.ca',
-    'images': ['images/something.jpeg'],
-    'depends': ['web','sale','product', 'l10n_ca_moon'],
-    'data': [
-        'sale/sale_view.xml',
-        'partner/partner_view.xml',
-        'brewery_view.xml',
-        'brewery_dashboard.xml',
-    ],
-    'css': ['static/src/css/style.css'],
-    'installable': True,
-    'auto_install': False,
-}
+product_type()
+
+class product_product(osv.osv):
+    _inherit = 'product.product'
+
+    _columns = {
+        'product_type' : fields.many2one('product.type','Type'),
+    }
+
+product_product()
+
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
